@@ -13,7 +13,7 @@ class GoogleFontsTest extends TestCase
     /** @test */
     public function it_loads_google_fonts()
     {
-        $fonts = app(GoogleFonts::class)->load('inter', forceDownload: true);
+        $fonts = app(GoogleFonts::class)->load('inter', $forceDownload = true);
 
         $expectedFileName = '952ee985ef/fonts.css';
 
@@ -39,7 +39,7 @@ class GoogleFontsTest extends TestCase
         config()->set('google-fonts.fonts', ['cow' => 'moo']);
         config()->set('google-fonts.fallback', true);
 
-        $fonts = app(GoogleFonts::class)->load('cow', forceDownload: true);
+        $fonts = app(GoogleFonts::class)->load('cow', $forceDownload = true);
 
         $allFiles = $this->disk()->allFiles();
 

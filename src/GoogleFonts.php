@@ -10,14 +10,27 @@ use RuntimeException;
 
 class GoogleFonts
 {
+    protected Filesystem $filesystem;
+    protected string $path;
+    protected bool $inline;
+    protected bool $fallback;
+    protected string $userAgent;
+    protected array $fonts;
+
     public function __construct(
-        protected Filesystem $filesystem,
-        protected string $path,
-        protected bool $inline,
-        protected bool $fallback,
-        protected string $userAgent,
-        protected array $fonts,
+        $filesystem,
+        $path,
+        $inline,
+        $fallback,
+        $userAgent,
+        $fonts
     ) {
+        $this->filesystem = $filesystem;
+        $this->path = $path;
+        $this->inline = $inline;
+        $this->fallback = $fallback;
+        $this->userAgent = $userAgent;
+        $this->fonts = $fonts;
     }
 
     public function load(string $font = 'default', bool $forceDownload = false): Fonts
@@ -45,7 +58,7 @@ class GoogleFonts
                 throw $exception;
             }
 
-            return new Fonts(googleFontsUrl: $url);
+            return new Fonts($url);
         }
     }
 
@@ -58,10 +71,10 @@ class GoogleFonts
         $localizedCss = $this->filesystem->get($this->path($url, 'fonts.css'));
 
         return new Fonts(
-            googleFontsUrl: $url,
-            localizedUrl: $this->filesystem->url($this->path($url, 'fonts.css')),
-            localizedCss: $localizedCss,
-            preferInline: $this->inline,
+            $url,
+            $this->filesystem->url($this->path($url, 'fonts.css')),
+            $localizedCss,
+            $this->inline,
         );
     }
 
@@ -91,10 +104,10 @@ class GoogleFonts
         $this->filesystem->put($this->path($url, 'fonts.css'), $localizedCss);
 
         return new Fonts(
-            googleFontsUrl: $url,
-            localizedUrl: $this->filesystem->url($this->path($url, 'fonts.css')),
-            localizedCss: $localizedCss,
-            preferInline: $this->inline,
+            $url,
+            $this->filesystem->url($this->path($url, 'fonts.css')),
+            $localizedCss,
+            $this->inline,
         );
     }
 

@@ -7,12 +7,21 @@ use Illuminate\Support\HtmlString;
 
 class Fonts implements Htmlable
 {
+    protected string $googleFontsUrl;
+    protected string $localizedUrl;
+    protected string $localizedCss;
+    protected bool $preferInline = false;
+
     public function __construct(
-        protected string $googleFontsUrl,
-        protected ?string $localizedUrl = null,
-        protected ?string $localizedCss = null,
-        protected bool $preferInline = false,
+        $googleFontsUrl = 'default',
+        $localizedUrl = '',
+        $localizedCss = '',
+        $preferInline = false
     ) {
+        $this->googleFontsUrl = $googleFontsUrl;
+        $this->localizedUrl = $localizedUrl;
+        $this->localizedCss = $localizedCss;
+        $this->preferInline = $preferInline;
     }
 
     public function inline(): HtmlString
